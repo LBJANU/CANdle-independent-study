@@ -20,8 +20,9 @@ public class Robot extends TimedRobot {
   private static final String kDefault = "Default";
   private static final String kRed = "Red";
   private static final String kBlue = "Blue";
-  private String m_colorselected;
+  private static final String kGreen = "Green";
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+
   CANdle led = new CANdle(2);
 
   @Override
@@ -34,26 +35,32 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default", kDefault);
     m_chooser.addOption("Red", kRed);
     m_chooser.addOption("Blue", kBlue);
-   // m_colorselected = m_chooser.getSelected();
+    m_chooser.addOption("Green", kGreen);
+   
     SmartDashboard.putData("colorboi", m_chooser);
   }
 
   @Override
   public void teleopPeriodic() {
+    String m_colorselected = m_chooser.getSelected();
   
     //SmartDashboard.putString("colorselected", m_colorselected);
 
-    if (m_chooser.getSelected() == "Default")
+    if (m_colorselected == "Default")
     {
       led.setLEDs(0, 0, 0);
     }
-    else if (m_chooser.getSelected() == "Red")
+    else if (m_colorselected == "Red")
     {
       led.setLEDs(100, 0, 0);
     }
-    else if (m_chooser.getSelected() == "Blue")
+    else if (m_colorselected == "Blue")
     {
       led.setLEDs(0, 0, 100);
+    }
+    else if (m_colorselected == "Green")
+    {
+      led.setLEDs(0, 100, 0);
     }
     else {
       led.setLEDs(100, 100, 100);
