@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PS4Controller;
 
 import java.util.zip.Deflater;
 
@@ -21,9 +22,25 @@ public class Robot extends TimedRobot {
   private static final String kRed = "Red";
   private static final String kBlue = "Blue";
   private static final String kGreen = "Green";
+  private static final Double numRed = 255.0;
+  private static final Double numGreen = 255.0;
+  private static final Double numBlue = 255.0;
+
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   CANdle led = new CANdle(2);
+  PS4Controller m_controller = new PS4Controller(0);
+  Double joystickval = m_controller.getLeftY();
+  double joystickvalred = m_controller.getLeftY() * numRed;
+  double joystickvalgreen = m_controller.getLeftY() * numGreen;
+  double joystickvalblue = m_controller.getLeftY() * numBlue;
+
+  int wrapred = (int) Math.abs(joystickvalred);
+  int wrapgreen = (int) Math.abs(joystickvalgreen);
+  int wrapblue = (int) Math.abs(joystickvalblue);
+
+
+  
 
   @Override
   public void autonomousPeriodic() {
@@ -42,9 +59,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
+
+    //led.setLEDs(wrapred, wrapgreen, wrapblue);   <- Changing the value based on the joystick code 
+
     String m_colorselected = m_chooser.getSelected();
-  
-    //SmartDashboard.putString("colorselected", m_colorselected);
+
+    SmartDashboard.putString("colorselected", m_colorselected);
+
+    
+        
+    
 
     if (m_colorselected == "Default")
     {
